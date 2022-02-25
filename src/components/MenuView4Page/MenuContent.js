@@ -81,7 +81,7 @@ const MenuContent = () => {
     <>
       <div className="flex justify-center w-full mt-8">
         <div
-          className="flex justify-start ml-14 overflow-x-auto row-categories pb-2 w-full"
+          className="flex justify-start px-12 overflow-x-auto row-categories pb-2 w-full"
           style={{ display: '-webkit-box' }}
         >
           {allCategories.map((item) => (

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup } from '@mui/material';
 import { useState } from 'react';
-import BgHojas from '../../images/background-hojas.svg';
 import Hamburger from '../../images/hamburger.png';
 import LlamarMeseroIcon from '../../images/icons/llamar-mesero.svg';
 
@@ -28,17 +27,14 @@ function OrderPage() {
       <div
         className="w-full h-full overflow-y-scroll"
         style={{
-          backgroundImage: `url(${BgHojas})`,
-          position: 'fixed',
-          minWidth: '100%',
-          minHeight: '100%',
+          backgroundColor: '#191F40',
         }}
       >
-        <header className="flex items-center justify-between p-20">
+        <header className="flex items-center justify-between p-20 sticky top-0">
           <Link to="/home" className="flex justify-center">
             <img src="assets/icons/Back-Arrow.svg" alt="icon-back" className="inline-block w-8" />
           </Link>
-          <h3 className="font-bold text-white">Combo Hamburger</h3>
+          <h3 className="font-bold text-white text-13">Combo Hamburger</h3>
           <span />
         </header>
         <div className="w-full bg-white min-h-screen flex flex-col items-center gap-4 px-20 py-16">
@@ -111,7 +107,13 @@ function OrderPage() {
                   </Button>
                 </ButtonGroup>
               </div>
-              <div className="flex flex-col gap-3 items-center mt-12">
+              <div className="fixed bottom-0 left-0 w-full p-20 flex flex-col gap-6 items-center mt-12">
+                <Button
+                  style={{ color: blue, fontWeight: 'bold', fontSize: 18, textTransform: 'none' }}
+                  variant="text"
+                >
+                  Seguir pidiendo
+                </Button>
                 <div className="w-full">
                   <button
                     type="button"
@@ -119,16 +121,6 @@ function OrderPage() {
                     style={{ color: '#FE014E', borderColor: '#000' }}
                   >
                     Tu cuenta + Iva: $73.000
-                    <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
-                  </button>
-                </div>
-                <div className="w-full">
-                  <button
-                    type="button"
-                    className="px-8 py-6 flex items-center justify-center gap-4 w-full rounded-full text-white text-center font-bold"
-                    style={{ backgroundColor: blue }}
-                  >
-                    Llamar al mesero
                     <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
                   </button>
                 </div>
@@ -143,12 +135,17 @@ function OrderPage() {
                     <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
                   </button>
                 </div>
-                <Button
-                  style={{ color: blue, fontWeight: 'bold', fontSize: 18, textTransform: 'none' }}
-                  variant="text"
-                >
-                  Seguir pidiendo
-                </Button>
+
+                <div className="w-full">
+                  <button
+                    type="button"
+                    className="px-8 py-6 flex items-center justify-center gap-4 w-full rounded-full text-white text-center font-bold"
+                    style={{ backgroundColor: blue }}
+                  >
+                    Llamar al mesero
+                    <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

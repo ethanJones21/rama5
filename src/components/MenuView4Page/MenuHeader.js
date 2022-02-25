@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
 import VistaCuatroIcon from '../../images/icono-vista-4.svg';
 import LogoMenuIcon from '../../images/icons/Logo-Menu-White.svg';
 // import { Link, useParams } from 'react-router-dom';
 // import { useEffect, useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getInfoCommerce } from '../../store/app/commerceSlice';
-import BackArrowWhite from '../../images/icons/Back-Arrow-icon.svg';
 
 const MenuHeader = () => {
   // const dispatch = useDispatch();
@@ -30,16 +28,7 @@ const MenuHeader = () => {
   return (
     <div className="gap-32 bg-transparent relative">
       <div className="flex flex-col items-start gap-4" style={{ background: 'rgba(0,0,0,.6)' }}>
-        <div className="pt-16 pb-8 px-10">
-          {/* <Link to={`/home/${routeParams?.idCommerce}`} className="flex justify-center"> */}
-          <Link to="/home/ewrew" className="flex justify-center">
-            <div>
-              <img src={BackArrowWhite} alt="icon-back" className="inline-block w-8" />
-            </div>
-            <p className="pl-4 font-600 text-white">Atras</p>
-          </Link>
-        </div>
-        <div className="w-full px-12 pb-8">
+        <div className="w-full px-12 py-8">
           <div className="flex items-end justify-between w-full">
             <img
               src={VistaCuatroIcon}

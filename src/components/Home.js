@@ -7,23 +7,22 @@ import CoverBlack from '../images/CoverFullBlacksvg.svg';
 import SocialIcon from '../images/social.svg';
 import Logo from '../images/logo.svg';
 import NameCompanyIcon from '../images/name-company.svg';
-import CarouselTags from './CarouselTags';
 import Search from './Search';
 
 const Home = () => {
   const [tags, setTags] = useState([
-    'Todos',
-    '# Cocteles',
-    '# Comida',
-    '# Rock',
-    '# Discotecas',
-    '# Restaurantes',
-    '# Comida',
-    '# Bares',
-    '# Discotecas',
-    '# Rock',
-    '# Comida',
-    '# Bares',
+    { name: 'Todos', selected: true },
+    { name: '# Cocteles', selected: false },
+    { name: '# Comida', selected: false },
+    { name: '# Rock', selected: false },
+    { name: '# Discotecas', selected: false },
+    { name: '# Restaurantes', selected: false },
+    { name: '# Comida', selected: false },
+    { name: '# Bares', selected: false },
+    { name: '# Discotecas', selected: false },
+    { name: '# Rock', selected: false },
+    { name: '# Comida', selected: false },
+    { name: '# Bares', selected: false },
   ]);
 
   const [sites, setSites] = useState([
@@ -112,54 +111,75 @@ const Home = () => {
             <span>Cafes</span>
           </div>
         </div>
+
         <div
-          className="w-full pl-2 h-34 flex flex-col items-center"
+          className="w-full h-34 flex flex-col items-center"
           style={{ backgroundColor: '#21354F' }}
         >
-          <div className="w-full sm:w-1/2 pl-8 mt-5 h-32" style={{ maxWidth: '100%' }}>
-            <CarouselTags tags={tags} />
+          <div className="w-full sm:w-1/2 mt-5 h-32" style={{ maxWidth: '100%' }}>
+            <div
+              className="flex justify-start px-12 overflow-x-auto row-categories pb-2 w-full"
+              style={{ display: '-webkit-box' }}
+            >
+              {tags.map((tag, i) => (
+                <div className="py-2 mr-6">
+                  <button
+                    type="button"
+                    className="min-w-max flex justify-center text-center rounded text-white
+                    shadow-md px-16 py-5"
+                    style={{
+                      backgroundColor: '#14202F',
+                      border: tag.selected ? '2px solid #5E7C9E' : 'none',
+                    }}
+                    // onClick={() => handleFilterProducts(item.id)}
+                  >
+                    <p>{tag.name}</p>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="max-w-screen-xl px-10 py-5 mx-auto sm:p-10 md:p-16">
+          <div className="w-full px-10 py-5 sm:p-10 md:p-16">
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
               {sites.map(({ name, category, tags, social }, index) => {
                 return (
                   <div key={index} className="rounded-xl overflow-hidden shadow-lg cursor-pointer">
                     <div className="relative">
-                      <a>
-                        <img
-                          className="w-full"
-                          src="https://images.pexels.com/photos/196667/pexels-photo-196667.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                          alt="Sunset in the mountains"
-                        />
-                        <div
-                          className="absolute top-0 right-0 w-full h-full"
-                          style={{ 'box-shadow': '0px -112px 48px -9px rgba(0,0,0,0.75) inset' }}
-                        />
-                      </a>
-                      <a href="#!">
-                        <div className="absolute bottom-0 left-0 px-8 py-6 text-white text-sm w-full">
-                          <div className="flex items-end justify-between">
-                            <div className="flex flex-col">
-                              <h3 className="font-bold">{name}</h3>
-                              <h4 className="text-12">{category}</h4>
-                              <div className="flex gap-1 items-center">
-                                {tags.map((tag, i) => {
-                                  return (
-                                    <span key={i} className="text-9 sm:text-10">
-                                      {tag}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                            <div className="flex flex-col items-end">
-                              <img src={SocialIcon} alt="Icono juego social" />
-                              <span className="text-6">{social}</span>
-                            </div>
+                      <img
+                        className="w-full"
+                        src="https://images.pexels.com/photos/196667/pexels-photo-196667.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+                        alt="Sunset in the mountains"
+                      />
+                      <div
+                        className="absolute top-0 right-0 w-full h-full"
+                        style={{ 'box-shadow': '0px -112px 48px -9px rgba(0,0,0,0.75) inset' }}
+                      />
+
+                      <div
+                        className="absolute bottom-0 left-0 px-8 py-6 text-white text-sm w-full flex items-end justify-between z-10"
+                        style={{
+                          height: '6rem',
+                        }}
+                      >
+                        <div className="flex flex-col">
+                          <h3 className="font-bold text-11 -mb-5">{name}</h3>
+                          <h4 className="text-11 -mb-5">{category}</h4>
+                          <div className="flex gap-1 items-center">
+                            {tags.map((tag, i) => {
+                              return (
+                                <span key={i} className="text-9 sm:text-10">
+                                  {tag}
+                                </span>
+                              );
+                            })}
                           </div>
                         </div>
-                      </a>
+                        <div className="flex flex-col items-end">
+                          <img src={SocialIcon} alt="Icono juego social" />
+                          <span className="text-6">{social}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -214,7 +234,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="fixed" style={{ right: '1.7rem', bottom: '8rem' }}>
+      <div className="fixed z-20" style={{ right: '1.5rem', bottom: '5rem' }}>
         <button
           type="button"
           className="rounded-full p-5 border-4 border-white"

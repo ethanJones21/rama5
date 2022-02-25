@@ -48,9 +48,9 @@ export default function ThreeTabs({ allProducts }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-48">
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 2, borderColor: 'divider', marginLeft: 2 }}>
+        <Box sx={{ borderBottom: 2, borderColor: 'divider', marginLeft: 2.5 }}>
           <Tabs
             TabIndicatorProps={{
               style: {
@@ -62,9 +62,9 @@ export default function ThreeTabs({ allProducts }) {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Transferida" {...a11yProps(0)} />
-            <Tab label="En proceso" {...a11yProps(1)} />
-            <Tab label="Entregado" {...a11yProps(2)} />
+            <Tab style={{ textTransform: 'none' }} label="Transferida" {...a11yProps(0)} />
+            <Tab style={{ textTransform: 'none' }} label="En proceso" {...a11yProps(1)} />
+            <Tab style={{ textTransform: 'none' }} label="Entregado" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>

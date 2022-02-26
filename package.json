@@ -33,6 +33,7 @@
     "react-hook-form": "^7.21.0",
     "react-hook-geolocation": "^1.0.11",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-modal-image-responsive": "^1.1.1",
     "react-qr-reader-es6": "^2.2.1-2",
     "react-redux": "^7.2.6",
     "react-router": "^5.2.0",

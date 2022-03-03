@@ -234,7 +234,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="fixed z-20" style={{ right: '1.5rem', bottom: '5rem' }}>
+      <div className="fixed z-20" style={{ right: '1.5rem', bottom: '2rem' }}>
         <button
           type="button"
           className="rounded-full p-5 border-4 border-white"

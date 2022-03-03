@@ -140,18 +140,13 @@ function ConfirmOrderPage() {
       </div>
 
       <div
-        className="fixed bottom-0 left-0 px-20 pt-4 w-full bg-white flex flex-col gap-3 text-black"
+        className="fixed bottom-0 left-0 px-20 pt-8 w-full bg-white flex flex-col gap-3 text-black"
         style={{ minHeight: '15rem' }}
       >
-        <h4 className="font-bold text-10" style={{ color: blue }}>
-          Adiciona comentarios a tu pedido
-        </h4>
         <TextField
           style={{ backgroundColor: '#F5F5F5' }}
           placeholder="Comentarios para tu pedido"
           multiline
-          rows={2}
-          maxRows={4}
         />
         <div className="w-full">
           <button
@@ -164,14 +159,24 @@ function ConfirmOrderPage() {
           </button>
         </div>
 
-        <button
-          type="button"
-          className="p-8 flex items-center justify-center gap-3 w-full rounded-full border-2 border-white text-white text-center font-bold"
-          style={{ background: '#051B34' }}
-        >
-          Llamar al mesero
-          <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
-        </button>
+        <div className="buttons flex gap-4">
+          <button
+            type="button"
+            className="p-8 flex items-center justify-center gap-3 w-full rounded-md text-white text-center font-bold text-8"
+            style={{ background: '#051B34' }}
+          >
+            Llamar al mesero
+            <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
+          </button>
+          <button
+            type="button"
+            className="px-8 py-6 flex items-center justify-center gap-12 w-full rounded-md text-white text-center font-bold text-8"
+            style={{ backgroundColor: '#00CE84' }}
+          >
+            Transferir orden al mesero
+            <img src={LlamarMeseroIcon} alt="Icono de llamar al mesero" />
+          </button>
+        </div>
       </div>
     </div>
   );

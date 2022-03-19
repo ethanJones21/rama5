@@ -9,6 +9,8 @@ import alert from './app/alertSlice';
 import groupUser from './app/groupUserSlice';
 import user from './app/userSlice';
 import interests from './app/interestSlice';
+import popup from './app/popupSlice';
+import questions from './app/questionSlice';
 
 const createReducer = (asyncReducers) => (state, action) => {
   const combinedReducer = combineReducers({
@@ -23,6 +25,8 @@ const createReducer = (asyncReducers) => (state, action) => {
     groupUser,
     user,
     interests,
+    popup,
+    questions,
   });
   return combinedReducer(state, action);
 };

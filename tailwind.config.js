@@ -951,6 +951,8 @@ module.exports = {
       none: 'none',
       ...theme('spacing'),
       full: '100%',
+      50: '50%',
+      80: '80%',
       min: 'min-content',
       max: 'max-content',
       prose: '65ch',

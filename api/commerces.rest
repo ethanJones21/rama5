@@ -1,0 +1,17 @@
+
+
+# GET
+
+
+
+# POST-----------------------------------------------------
+
+# Todos los comercios por geolocalización
+POST https://api.wuay.com.co/api/v1/commerces/game HTTP/1.1
+content-type: application/json
+
+{
+    "longitud": 0,
+    "latitud": 0,
+    "with_location": 1
+}

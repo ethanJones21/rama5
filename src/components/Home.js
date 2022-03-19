@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { Button } from '@mui/material';
 import CoffeeIcon from '../images/coffee.svg';
 import BeerIcon from '../images/beer.svg';
 import CocktailIcon from '../images/cocktail.svg';
@@ -8,62 +11,70 @@ import SocialIcon from '../images/social.svg';
 import Logo from '../images/logo.svg';
 import NameCompanyIcon from '../images/name-company.svg';
 import Search from './Search';
+import { getCommercesWithoutUser, getTypes } from '../store/app/commerceSlice';
+import ModalInvitation from './ModalInvitation';
+import { getInterest, selectInterests } from '../store/app/interestSlice';
+import Loading from './Loading';
+import JwtService from '../services/jwtService';
+import { getProfileGroup } from '../store/app/groupUserSlice';
+import ImageGroup from '../images/GrupoExample.svg';
 
 const Home = () => {
-  const [tags, setTags] = useState([
-    { name: 'Todos', selected: true },
-    { name: '# Cocteles', selected: false },
-    { name: '# Comida', selected: false },
-    { name: '# Rock', selected: false },
-    { name: '# Discotecas', selected: false },
-    { name: '# Restaurantes', selected: false },
-    { name: '# Comida', selected: false },
-    { name: '# Bares', selected: false },
-    { name: '# Discotecas', selected: false },
-    { name: '# Rock', selected: false },
-    { name: '# Comida', selected: false },
-    { name: '# Bares', selected: false },
-  ]);
+  const [allTypes, setAllTypes] = useState([]);
+  const [allInterests, setAllInterests] = useState([]);
+  const [sites, setSites] = useState([]);
+  const { profileGroup } = useSelector(({ groupUser }) => groupUser);
 
-  const [sites, setSites] = useState([
-    {
-      name: 'Nombre del sitio',
-      category: 'Categoria',
-      tags: ['#Miedos', '#Grupos', '#Solteros'],
-      social: 'Interatuando 2000',
-    },
-    {
-      name: 'Nombre del sitio2',
-      category: 'Categoria',
-      tags: ['#Tranki', '#Grupos', '#Solteros'],
-      social: 'Interatuando 2000',
-    },
-    {
-      name: 'Nombre del sitio3',
-      category: 'Categoria',
-      tags: ['#tag1', '#tag2', '#tag3'],
-      social: 'Interatuando 2000',
-    },
-    {
-      name: 'Nombre del sitio4',
-      category: 'Categoria',
-      tags: ['#tag1', '#tag2', '#tag3'],
-      social: 'Interatuando 2000',
-    },
-  ]);
+  // selected
+  const [selectedTypes, setSelectedTypes] = useState([false, false, false, false]);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  // filters
+  const [search, setSearch] = useState('');
+  const [type, setType] = useState('');
+  const [interest, setInterest] = useState('');
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  // const routeParams = useParams();
+  const { commercesAround, types } = useSelector(({ commerces }) => commerces);
+  const interestsAround = useSelector(selectInterests);
 
-  // const { commerce } = useSelector(({ commerces }) => commerces);
+  const handleFilterInterests = (interestId) => {
+    const newSelect = [...selectedInterests];
+    newSelect.forEach((sel, i, arr) => {
+      arr[i] = false;
+    });
+    newSelect[interestId - 1] = true;
+    console.log(newSelect);
+    setSelectedInterests([...newSelect]);
+    dispatch(getCommercesWithoutUser({ search, type, interest: interestId }));
+  };
 
-  // useEffect(() => {
-  // TODO TRAER DATOS DEL COMMERCIO CON ROUTEPARAMS.IDCOMMERCE
-  // const id = routeParams.idCommerce ? parseInt(routeParams?.idCommerce, 10) : 0;
-  // localStorage.setItem('@Menu', id);
-  // dispatch(getInfoCommerce(id));
-  // }, [dispatch, routeParams]);
+  const handleFilterTypes = (typeId) => {
+    const newSelect = [...selectedTypes];
+    newSelect.forEach((sel, i, arr) => {
+      arr[i] = false;
+    });
+    newSelect[typeId - 1] = true;
+    setSelectedTypes([...newSelect]);
+    dispatch(getCommercesWithoutUser({ search, type: typeId, interest }));
+  };
+
+  useEffect(() => {
+    dispatch(getProfileGroup());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!commercesAround && !types) {
+      dispatch(getInterest());
+      dispatch(getCommercesWithoutUser({ search, type, interest }));
+      dispatch(getTypes());
+    }
+    setSites(commercesAround);
+    setAllInterests(interestsAround);
+    setAllTypes(types);
+    setSelectedInterests(new Array(interestsAround.length).fill(false));
+  }, [dispatch, interestsAround, commercesAround, search, type, types, interest]);
 
   return (
     <div
@@ -74,7 +85,7 @@ const Home = () => {
     >
       <div className="w-full flex flex-col items-center gap-8">
         <div className="w-full">
-          <Search />
+          <Search type={type} interest={interest} />
         </div>
 
         <div className="text-center">
@@ -83,33 +94,50 @@ const Home = () => {
         <p className="text-9 font-400">¿Qué quieres hacer hoy Julian?</p>
 
         <div className="flex justify-around items-center w-3/4 md:w-1/4 mb-8 cursor-pointer">
-          <div className="flex flex-col items-center">
+          <Button
+            sx={{ textTransform: 'none', color: selectedTypes[0] ? '#EE27FF' : '#fff' }}
+            onClick={() => handleFilterTypes(allTypes[0].id)}
+            className="flex flex-col items-center"
+          >
             <div className="flex items-center justify-center p-5 mb-8 rounded-full border-3 border-purple w-full">
               <img src={CocktailIcon} alt="tender-logo" />
             </div>
-            <span>Disco</span>
-          </div>
+            {allTypes && allTypes.length > 0 && <span>{allTypes[0].name}</span>}
+          </Button>
 
-          <div className="flex flex-col items-center">
+          <Button
+            onClick={() => handleFilterTypes(allTypes[1].id)}
+            sx={{ textTransform: 'none', color: selectedTypes[1] ? '#01F2EB' : '#fff' }}
+            className="flex flex-col items-center"
+          >
             <div className="flex items-center justify-center p-5 mb-8 rounded-full border-3 border-cyan w-full">
               <img src={FoodIcon} alt="tender-logo" />
             </div>
-            <span>Comida</span>
-          </div>
+            {allTypes && allTypes.length > 0 && <span>{allTypes[1].name}</span>}
+          </Button>
 
-          <div className="flex flex-col items-center" style={{ minWidth: 55 }}>
-            <div className="flex items-center justify-center p-5 mb-8 rounded-full border-3 border-yellow w-full">
+          <Button
+            onClick={() => handleFilterTypes(allTypes[2].id)}
+            sx={{ textTransform: 'none', color: selectedTypes[2] ? '#F1CB00' : '#fff' }}
+            className="flex flex-col items-center"
+            style={{ minWidth: 55 }}
+          >
+            <div className="flex items-center justify-center py-5 px-8 mb-8 rounded-full border-3 border-yellow w-full">
               <img src={BeerIcon} alt="tender-logo" />
             </div>
-            <span>Bares</span>
-          </div>
+            {allTypes && allTypes.length > 0 && <span>{allTypes[2].name}</span>}
+          </Button>
 
-          <div className="flex flex-col items-center">
+          <Button
+            onClick={() => handleFilterTypes(allTypes[3].id)}
+            sx={{ textTransform: 'none', color: selectedTypes[3] ? '#FE014E' : '#fff' }}
+            className="flex flex-col items-center"
+          >
             <div className="flex items-center justify-center p-5 mb-8 rounded-full border-3 border-pink w-full">
               <img src={CoffeeIcon} alt="tender-logo" />
             </div>
-            <span>Cafes</span>
-          </div>
+            {allTypes && allTypes.length > 0 && <span>{allTypes[3].name}</span>}
+          </Button>
         </div>
 
         <div
@@ -121,128 +149,101 @@ const Home = () => {
               className="flex justify-start px-12 overflow-x-auto row-categories pb-2 w-full"
               style={{ display: '-webkit-box' }}
             >
-              {tags.map((tag, i) => (
-                <div className="py-2 mr-6">
-                  <button
-                    type="button"
-                    className="min-w-max flex justify-center text-center rounded text-white
-                    shadow-md px-16 py-5"
-                    style={{
-                      backgroundColor: '#14202F',
-                      border: tag.selected ? '2px solid #5E7C9E' : 'none',
-                    }}
-                    // onClick={() => handleFilterProducts(item.id)}
-                  >
-                    <p>{tag.name}</p>
-                  </button>
-                </div>
-              ))}
+              {allInterests &&
+                allInterests.length > 0 &&
+                allInterests.map((item, i) => (
+                  <div key={i} className="py-2 mr-6">
+                    <button
+                      type="button"
+                      className="min-w-max flex justify-center text-center rounded text-white
+                      shadow-md px-16 py-5"
+                      style={{
+                        backgroundColor: '#14202F',
+                        border: selectedInterests[i] && '2px solid #5E7C9E',
+                      }}
+                      onClick={() => handleFilterInterests(item.id)}
+                    >
+                      <p>{item.name}</p>
+                    </button>
+                  </div>
+                ))}
+              {!allInterests && <Loading />}
+              {allInterests && allInterests.length === 0 && <div>No hay intereses</div>}
             </div>
           </div>
 
           <div className="w-full px-10 py-5 sm:p-10 md:p-16">
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
-              {sites.map(({ name, category, tags, social }, index) => {
-                return (
-                  <div key={index} className="rounded-xl overflow-hidden shadow-lg cursor-pointer">
-                    <div className="relative">
-                      <img
-                        className="w-full"
-                        src="https://images.pexels.com/photos/196667/pexels-photo-196667.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                        alt="Sunset in the mountains"
-                      />
-                      <div
-                        className="absolute top-0 right-0 w-full h-full"
-                        style={{ 'box-shadow': '0px -112px 48px -9px rgba(0,0,0,0.75) inset' }}
-                      />
+              {sites &&
+                sites.length > 0 &&
+                sites.map(({ id, name, address, logo }, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="rounded-xl overflow-hidden shadow-lg cursor-pointer"
+                    >
+                      <div className="relative">
+                        <Link to={`/commerce/${id}`}>
+                          <img className="w-full" src={logo.url} alt="Sunset in the mountains" />
+                          <div
+                            className="absolute top-0 right-0 w-full h-full"
+                            style={{ boxShadow: '0px -112px 48px -9px rgba(0,0,0,0.75) inset' }}
+                          />
 
-                      <div
-                        className="absolute bottom-0 left-0 px-8 py-6 text-white text-sm w-full flex items-end justify-between z-10"
-                        style={{
-                          height: '6rem',
-                        }}
-                      >
-                        <div className="flex flex-col">
-                          <h3 className="font-bold text-11 -mb-5">{name}</h3>
-                          <h4 className="text-11 -mb-5">{category}</h4>
-                          <div className="flex gap-1 items-center">
-                            {tags.map((tag, i) => {
-                              return (
-                                <span key={i} className="text-9 sm:text-10">
-                                  {tag}
-                                </span>
-                              );
-                            })}
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end">
-                          <img src={SocialIcon} alt="Icono juego social" />
-                          <span className="text-6">{social}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-
-              <h4 className="text-center font-bold text-14 my-8">Explora otros sitios</h4>
-
-              {sites.map(({ name, category, tags, social }, index) => {
-                return (
-                  <div key={index} className="rounded-xl overflow-hidden shadow-lg cursor-pointer">
-                    <div className="relative">
-                      <a>
-                        <img
-                          className="w-full"
-                          src="https://images.pexels.com/photos/196667/pexels-photo-196667.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                          alt="Sunset in the mountains"
-                        />
-                        <div
-                          className="absolute top-0 right-0 w-full h-full"
-                          style={{ 'box-shadow': '0px -112px 48px -9px rgba(0,0,0,0.75) inset' }}
-                        />
-                      </a>
-                      <a href="#!">
-                        <div className="absolute bottom-0 left-0 px-8 py-6 text-white text-sm w-full">
-                          <div className="flex items-end justify-between">
-                            <div className="flex flex-col">
-                              <h3 className="font-bold">{name}</h3>
-                              <h4 className="text-12">{category}</h4>
+                          <div
+                            className="absolute bottom-0 left-0 px-8 py-6 text-white text-sm w-full flex items-end justify-between z-10"
+                            style={{
+                              height: '6rem',
+                            }}
+                          >
+                            <div className="flex flex-col w-2/3">
+                              <h3 className="font-bold text-12 -mb-5">{name}</h3>
+                              <h4 className="text-10 -mb-5 max-w-full truncate">{address}</h4>
                               <div className="flex gap-1 items-center">
-                                {tags.map((tag, i) => {
-                                  return (
-                                    <span key={i} className="text-9 sm:text-10">
-                                      {tag}
-                                    </span>
-                                  );
-                                })}
+                                <span className="text-9 sm:text-10"># Miedos</span>
+                                <span className="text-9 sm:text-10"># Grupos</span>
+                                <span className="text-9 sm:text-10"># Solteros</span>
                               </div>
                             </div>
-                            <div className="flex flex-col items-end">
+                            <div className="flex flex-col items-end w-1/3">
                               <img src={SocialIcon} alt="Icono juego social" />
-                              <span className="text-6">{social}</span>
+                              <span className="text-6">Interatuando 200</span>
                             </div>
                           </div>
-                        </div>
-                      </a>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              {!sites && <Loading />}
+              {sites && sites.length === 0 && <div>No hay comercios</div>}
             </div>
           </div>
         </div>
       </div>
 
       <div className="fixed z-20" style={{ right: '1.5rem', bottom: '2rem' }}>
-        <button
-          type="button"
-          className="rounded-full p-5 border-4 border-white"
-          style={{ backgroundColor: '#051B34' }}
+        <div
+          className="rounded-full p-5 border-4 border-white overflow-hidden flex items-center justify-center"
+          style={{ backgroundColor: '#051B34', width: '5rem', height: '5rem' }}
         >
-          <img src={Logo} alt="Imagen del usuario" />
-        </button>
+          {JwtService.getAccessToken() ? (
+            <Link to="/login">
+              <img
+                src={profileGroup?.photos[0]?.url || ImageGroup}
+                alt="img-profile"
+                className="object-cover h-full w-max"
+              />
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <img src={Logo} className="object-cover h-[80%] w-[80%]" alt="Imagen del usuario" />
+            </Link>
+          )}
+        </div>
       </div>
+
+      <ModalInvitation />
     </div>
   );
 };

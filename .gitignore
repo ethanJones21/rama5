@@ -2,10 +2,14 @@
 
 # dependencies
 /node_modules
+package-lock.json
 /.yarn
 
 # testing
 /coverage
+
+# .vscode
+/.vscode
 
 # production
 /build

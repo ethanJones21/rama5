@@ -192,16 +192,14 @@ const LoginPage = () => {
             style={{ width: '90%' }}
           >
             <div className="w-full flex justify-start mt-32">
-              <Link to={`/home/${menuLocalStorage}`} className="inline-block flex">
-                <div>
-                  <img
-                    src="assets/icons/Back-Arrow.svg"
-                    alt="icon-back"
-                    className="inline-block w-8"
-                  />
-                </div>
+              <Button sx={{ color: '#fff', textTransform: 'none' }} onClick={history.goBack}>
+                <img
+                  src="assets/icons/Back-Arrow.svg"
+                  alt="icon w-back"
+                  className="inline-block w-8"
+                />
                 <p className="pl-4 font-500">Atras</p>
-              </Link>
+              </Button>
             </div>
             <div className="w-full flex flex-col items-center space-y-16 mt-12">
               <img src="assets/icons/Login-icon.svg" alt="login-icon" className="block w-40 h-40" />

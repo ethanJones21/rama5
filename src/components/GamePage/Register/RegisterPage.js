@@ -1,5 +1,5 @@
 /* eslint-disable react/self-closing-comp */
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Autocomplete, Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { makeStyles, withStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
@@ -214,20 +214,17 @@ const RegisterPage = () => {
             minWidth: '100%',
             minHeight: '100%',
           }}
-          // style={{ background: '#051B34' }}
         >
           <div className="w-full flex flex-col items-center gap-8" style={{ width: '90%' }}>
             <div className="w-full flex justify-start mt-32">
-              <Link to="/login" className="inline-block flex">
-                <div>
-                  <img
-                    src="assets/icons/Back-Arrow.svg"
-                    alt="icon w-back"
-                    className="inline-block w-8"
-                  />
-                </div>
+              <Button sx={{ color: '#fff', textTransform: 'none' }} onClick={history.goBack}>
+                <img
+                  src="assets/icons/Back-Arrow.svg"
+                  alt="icon w-back"
+                  className="inline-block w-8"
+                />
                 <p className="pl-4 font-500">Atras</p>
-              </Link>
+              </Button>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="pb-8">
               <div className="w-full flex flex-col items-center space-y-8">

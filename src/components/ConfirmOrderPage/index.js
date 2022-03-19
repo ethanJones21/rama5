@@ -87,7 +87,7 @@ function ConfirmOrderPage() {
           return tags.map((tag, i) => {
             return (
               <div className="product" key={i}>
-                <h3 className="font-bold text-14 text-black">
+                <h3 className="font-bold text-12 text-black">
                   {tag}: {order[tag].length} und
                 </h3>
                 {order[tag].map(({ product, description, price, count }, i) => (
@@ -99,7 +99,7 @@ function ConfirmOrderPage() {
                         alt=""
                       />
                       <div className="text w-3/4 max-w-full" style={{ maxHeight: 40 }}>
-                        <h4 className="font-bold text-14 truncate" style={{ color: blue }}>
+                        <h4 className="font-bold text-12 truncate" style={{ color: blue }}>
                           {product}
                         </h4>
                         <p className="truncate">{description}</p>
@@ -139,10 +139,7 @@ function ConfirmOrderPage() {
         })}
       </div>
 
-      <div
-        className="fixed bottom-0 left-0 px-20 pt-8 w-full bg-white flex flex-col gap-3 text-black"
-        style={{ minHeight: '15rem' }}
-      >
+      <div className="fixed bottom-0 left-0 px-20 p-8 w-full bg-white flex flex-col gap-3 text-black">
         <TextField
           style={{ backgroundColor: '#F5F5F5' }}
           placeholder="Comentarios para tu pedido"

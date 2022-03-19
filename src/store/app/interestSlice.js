@@ -2,6 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import interestService from '../../services/apiService/interestService';
 import { openAlert } from './alertSlice';
 
+// TODO: DEBERIA SER GETINTERESTS PERO TENDRIA QUE CAMBIAR EN OTRAS VISTAS LA DEJO POR AHORA
 export const getInterest = createAsyncThunk(
   'interests/getInterest',
   async (data, { dispatch, rejectWithValue }) => {

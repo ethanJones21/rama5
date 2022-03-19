@@ -4,17 +4,15 @@ import { useEffect, useState } from 'react';
 
 import SplashScreenHome from './components/SplashPage/SplashScreen-Home';
 import SplashScreenSecond from './components/SplashPage/SplashScreen-Second';
-import MenuView4Page from './components/MenuView4Page';
-import MenuHome from './components/MenuPage/MenuHome';
+import MenuPage from './components/MenuPage';
 import Home from './components/Home';
-import QrPage from './components/QrPage/QrPage';
-import QrView7Page from './components/QrView7Page';
-import QrView3Page from './components/QrView3Page';
+import QrMenuPage from './components/Qr/QrMenuPage';
 import IntroPage from './components/GamePage/IntroPage';
 import Login from './components/GamePage/Login/LoginPage';
 import Register from './components/GamePage/Register/RegisterPage';
 import RegisterGroup from './components/GamePage/Register/ProfileGroudRegister';
-import InterestPage from './components/GamePage/Register/InterestPage';
+import Interest from './components/GamePage/Register/Interest';
+// import InterestPage from './components/GamePage/Register/InterestPage';
 import PageError from './components/PageError';
 import PageShell from './components/PageShell';
 
@@ -33,6 +31,7 @@ import withAppProviders from './components/withAppProviders';
 import OrderPage from './components/OrderPage';
 import ConfirmOrderPage from './components/ConfirmOrderPage';
 import CommerceDetailPage from './components/CommerceDetailPage';
+import QrFinalPage from './components/Qr/QrFinalPage';
 
 function App() {
   const tokenInitial = localStorage.getItem('@token-login');
@@ -47,47 +46,44 @@ function App() {
       <Router history={history}>
         <SocketWrapper>
           <Switch>
-            {/* TODO: VISTA-1 */}
-            <Route
-              path="/home/:idCommerce"
-              component={PageShell(Home, Grow, 'left')}
-              exact={false}
-            />
+            {/* VISTA-1 */}
+            {/* anterior: path="/home/:idCommerce" */}
+            <Route path="/" component={PageShell(Home, Grow, 'left')} exact />
 
-            {/* TODO: VISTA-2 */}
+            {/* VISTA-2 */}
             <Route
-              path="/view-2"
+              path="/commerce/:idCommerce"
               component={PageShell(CommerceDetailPage, Grow, 'left')}
               exact={false}
             />
 
-            {/* TODO: VISTA-3 */}
-            <Route path="/view-3" component={PageShell(QrView3Page, Grow, 'left')} exact />
+            {/* VISTA-3 */}
+            <Route path="/qr-menu" component={PageShell(QrMenuPage, Grow, 'left')} exact />
 
-            {/* TODO: VISTA-4 */}
+            {/* VISTA-4 */}
             <Route
-              path="/view-4"
-              component={PageShell(MenuView4Page, Grow, 'left')}
+              path="/menu/:idCommerce"
+              component={PageShell(MenuPage, Grow, 'left')}
               exact={false}
             />
 
-            {/* TODO: VISTA-5 */}
+            {/* VISTA-5 */}
             <Route path="/view-5" component={PageShell(OrderPage, Grow, 'left')} exact={false} />
 
-            {/* TODO: VISTA-6 */}
+            {/* VISTA-6 */}
             <Route
               path="/view-6"
               component={PageShell(ConfirmOrderPage, Grow, 'left')}
               exact={false}
             />
 
-            {/* TODO: VISTA-7 */}
-            <Route path="/view-7" component={PageShell(QrView7Page, Grow, 'left')} exact={false} />
+            {/* VISTA-7 */}
+            <Route path="/qr-end" component={PageShell(QrFinalPage, Grow, 'left')} exact={false} />
 
-            <Route path="/" component={PageShell(QrPage, Grow, 'left')} exact />
-
+            {/* Anuncio de romper el hielo */}
+            {/* anterior: path="/commerce/:idCommerce" */}
             <Route
-              path="/commerce/:idCommerce"
+              path="/ad-1"
               component={PageShell(SplashScreenHome, Grow, 'left')}
               exact={false}
             />
@@ -98,17 +94,13 @@ function App() {
               exact={false}
             />
 
-            <Route
-              path="/menu/:idCommerce"
-              component={PageShell(MenuHome, Grow, 'left')}
-              exact={false}
-            />
-
+            {/* ROMPER EL HIELO */}
             <Route
               path="/intro-game/:idCommerce"
               component={PageShell(IntroPage, Grow, 'left')}
               exact={false}
             />
+
             <Route
               path="/login"
               // component={PageShell(Login, Grow, 'left')}
@@ -117,6 +109,7 @@ function App() {
                 return localToken ? <Redirect to="/chat-public" /> : <Login />;
               }}
             />
+
             <Route
               path="/register"
               exact={false}
@@ -124,6 +117,7 @@ function App() {
                 return localToken ? <Redirect to="/chat-public" /> : <Register />;
               }}
             />
+
             <Route
               path="/register-group"
               // component={PageShell(RegisterGroup, Grow, 'left')}
@@ -132,14 +126,18 @@ function App() {
                 return <RegisterGroup />;
               }}
             />
+
+            {/* TODO: ESTA RUTA LA DEBO MODIFICAR */}
             <Route
               path="/interest"
               // component={PageShell(InterestPage, Grow, 'left')}
               exact={false}
               render={() => {
-                return <InterestPage />;
+                return <Interest />;
+                // return <InterestPage />;
               }}
             />
+
             <Route
               path="/chat-public"
               // component={PageShell(PublicChat, Grow, 'left')}
@@ -148,6 +146,7 @@ function App() {
                 return localToken ? <PublicChat /> : <Login />;
               }}
             />
+
             <Route
               path="/chat-guest"
               // component={PageShell(InvitedPage, Grow, 'left')}
@@ -156,6 +155,7 @@ function App() {
                 return localToken ? <InvitedPage /> : <Login />;
               }}
             />
+
             <Route
               path="/chat-personal"
               // component={PageShell(PersonalChat, Grow, 'left')}
@@ -164,6 +164,7 @@ function App() {
                 return localToken ? <PersonalChat /> : <Login />;
               }}
             />
+
             <Route
               path="/profile"
               // component={PageShell(ProfilePage, Grow, 'left')}
@@ -172,6 +173,7 @@ function App() {
                 return localToken ? <ProfilePage /> : <Login />;
               }}
             />
+
             <Route
               path="/look-at-profile"
               // component={PageShell(LookAtGroupProfile, Grow, 'left')}

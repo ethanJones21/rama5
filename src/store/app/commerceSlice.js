@@ -1,6 +1,29 @@
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import commercesService from '../../services/apiService/commerceService';
 
+export const getCommercesWithoutUser = createAsyncThunk(
+  'commerces/getCommercesWithoutUser',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      // data = {search, type, interest}
+      return await commercesService.getCommercesWithoutUser(data);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getTypes = createAsyncThunk(
+  'commerces/getTypes',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      return await commercesService.getTypes();
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const getCommerces = createAsyncThunk(
   'commerces/getCommerces',
   async (data, { dispatch, rejectWithValue }) => {
@@ -47,6 +70,7 @@ const commerceSlice = createSlice({
     errors: '',
     commerce: null,
     commercesAround: null,
+    types: null,
   }),
   reducers: {},
 
@@ -72,6 +96,28 @@ const commerceSlice = createSlice({
     [getCommerceAround.rejected]: (state) => {
       state.loading = false;
       state.commercesAround = null;
+    },
+    [getCommercesWithoutUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [getCommercesWithoutUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.commercesAround = action.payload;
+    },
+    [getCommercesWithoutUser.rejected]: (state) => {
+      state.loading = false;
+      state.commercesAround = null;
+    },
+    [getTypes.pending]: (state) => {
+      state.loading = true;
+    },
+    [getTypes.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.types = action.payload;
+    },
+    [getTypes.rejected]: (state) => {
+      state.loading = false;
+      state.types = null;
     },
   },
 });

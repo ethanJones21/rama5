@@ -1,5 +1,6 @@
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Button } from '@mui/material';
 import BackArrowBlack from '../../images/icons/Back-Arrow-Black.svg';
 import IconWuayBlack from '../../images/icons/Icon-Wuay-black.svg';
 import MapPin from '../../images/icons/map-pin.svg';
@@ -56,12 +57,15 @@ const IntroPage = () => {
       >
         <div className="" style={{ width: '90%' }}>
           <div className="flex mt-16">
-            <Link to={`/home/${routeParams?.idCommerce}`} className="flex justify-center">
-              <div>
-                <img src={BackArrowBlack} alt="icon-back" className="inline-block w-8" />
-              </div>
+            {/* <Link to={`/home/${routeParams?.idCommerce}`} className="flex justify-center"> */}
+            <Button
+              sx={{ color: '#051B34', textTransform: 'none' }}
+              onClick={history.goBack}
+              className="flex justify-center"
+            >
+              <img src={BackArrowBlack} alt="icon-back" className="inline-block w-8" />
               <p className="pl-4 font-500">Atras</p>
-            </Link>
+            </Button>
           </div>
           <div className="w-full">
             <div className="flex justify-center items-center">
